@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Interface</title>
+
+    <style>
+        .active-ptz-scene {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Streaming Controller Interface</h1>
+    
+    <script>
+    function controlPtzAndSwitchScene(sceneNumber) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/control_ptz_and_switch_scene/' + sceneNumber, true);
+
+        xhr.onload = function() {
+            var response = JSON.parse(xhr.responseText);
+            
+            if (response.success) {
+                alert(response.message); // You can replace this with any other UI update logic
+                updateActivePtzScene(sceneNumber);  // Add this line to update the active PTZ scene
+            } else {
+                alert("Error: " + response.message); // You can replace this with any other UI update logic
+            }
+        };
+
+        xhr.send();
+    }
+
+    function updateActivePtzScene(activeScene) {
+        // Remove the 'active-ptz-scene' class from all PTZ scene links
+        var ptzSceneLinks = document.querySelectorAll('.ptz-scene-link');
+        ptzSceneLinks.forEach(function(link) {
+            link.classList.remove('active-ptz-scene');
+        });
+
+        // Add the 'active-ptz-scene' class to the active PTZ scene link
+        var activeLink = document.querySelector('.ptz-scene-link[data-scene="' + activeScene + '"]');
+        if (activeLink) {
+            activeLink.classList.add('active-ptz-scene');
+        }
+    }
+
+    </script>
+
+    
+
+
+
+    <h2>Select Camera View:</h2>
+    <ul>
+        
+
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(0)" class="ptz-scene-link" data-scene=0>Main</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(1)" class="ptz-scene-link" data-scene=1>Sermon</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(2)" class="ptz-scene-link" data-scene=2>Altar</a></button> 
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(3)" class="ptz-scene-link" data-scene=3>Readings</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(4)" class="ptz-scene-link" data-scene=4>Front</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(5)" class="ptz-scene-link" data-scene=5>Readings No Presenter</a></button>          
+    </ul>
+
+    <h2>Start Streaming from OBS: [[NOT WORKING YET]]</h2>
+    <button><a href="{{ url_for('start_streaming') }}">Start Streaming</a></button>
+    
+
+
+</body>
+</html>
