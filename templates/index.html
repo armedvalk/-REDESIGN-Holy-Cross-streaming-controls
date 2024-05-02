@@ -56,21 +56,32 @@
 
 
     <h2>Select Camera View:</h2>
-    <ul>
-        
-
+    <h3>Annual</h3>
+    <ul> 
     <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(0)" class="ptz-scene-link" data-scene=0>Main</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(1)" class="ptz-scene-link" data-scene=1>Sermon</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(1)" class="ptz-scene-link" data-scene=1>Sermon/Announcements</a></button>
     <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(2)" class="ptz-scene-link" data-scene=2>Altar</a></button> 
     <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(3)" class="ptz-scene-link" data-scene=3>Readings</a></button>
     <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(4)" class="ptz-scene-link" data-scene=4>Front</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(5)" class="ptz-scene-link" data-scene=5>Readings No Presenter</a></button>          
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(5)" class="ptz-scene-link" data-scene=5>Readings/Sermon w/o Presenter</a></button>          
+    </ul>
+    
+    <h3>Pascha</h3>
+    <ul> 
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(6)" class="ptz-scene-link" data-scene=6>Pascha Main</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(7)" class="ptz-scene-link" data-scene=7>Psalm</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(8)" class="ptz-scene-link" data-scene=8>Gospel/Readings</a></button> 
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(9)" class="ptz-scene-link" data-scene=9>Group Psalm</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(10)" class="ptz-scene-link" data-scene=10>Sermon Presenter</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(11)" class="ptz-scene-link" data-scene=11>Sermon No Presenter</a></button>
+    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(12)" class="ptz-scene-link" data-scene=12>Burial</a></button>          
     </ul>
 
-    <h2>Start Streaming from OBS: [[NOT WORKING YET]]</h2>
-    <button><a href="{{ url_for('start_streaming') }}">Start Streaming</a></button>
-    
 
-
+    <h2>OBS Controls: [[NOT WORKING YET]]</h2>
+    <button><a href="/start_streaming">Start Streaming</a></button>
+    <button><a href="/stop_streaming">Start Streaming</a></button>
+    <button><a href="/start_recording">Start Streaming</a></button>
+    <button><a href="/stop_recording">Start Streaming</a></button>
 </body>
 </html>

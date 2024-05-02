@@ -4,6 +4,7 @@ from flask import Flask, render_template, jsonify
 import PyATEMMax
 from visca_over_ip import Camera
 #import websocket
+#import async
 #from pyATEM import ATEM
 #from pyATEM.const import VideoSource
 
@@ -19,12 +20,20 @@ PTZ_CAMERAS = [
 ]
 
 SCENES = [
-    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 0, "PRESENTATION" : 1, "NAME" : "Main"}, # Main
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 2, "PRESENTATION" : 1, "NAME" : "Main"}, # Main
     {"Camera" : PTZ_CAMERAS[0], "PRESET" : 4, "PRESENTATION" : 2, "NAME" : "Sermon"}, # Sermon
-    {"Camera" : PTZ_CAMERAS[2], "PRESET" : 0, "PRESENTATION" : 1, "NAME" : "Altar"}, # Altar
+    {"Camera" : PTZ_CAMERAS[2], "PRESET" : 1, "PRESENTATION" : 1, "NAME" : "Altar"}, # Altar
     {"Camera" : PTZ_CAMERAS[0], "PRESET" : 3, "PRESENTATION" : 1, "NAME" : "Reading"}, # Reading
-    {"Camera" : PTZ_CAMERAS[1], "PRESET" : 0, "PRESENTATION" : 1, "NAME" : "Front"}, # Front
-    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 3, "PRESENTATION" : 0, "NAME" : "Reading/Sermon No Presenter"} # Reading/Sermon No Presenter
+    {"Camera" : PTZ_CAMERAS[1], "PRESET" : 1, "PRESENTATION" : 1, "NAME" : "Front"}, # Front
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 3, "PRESENTATION" : 0, "NAME" : "Reading/Sermon No Presenter"}, # Reading/Sermon No Presenter
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 5, "PRESENTATION" : 1, "NAME" : "Pascha Main"}, 
+    {"Camera" : PTZ_CAMERAS[1], "PRESET" : 5, "PRESENTATION" : 4, "NAME" : "Psalm"}, 
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 7, "PRESENTATION" : 4, "NAME" : "Gospel/Readings"},
+    {"Camera" : PTZ_CAMERAS[1], "PRESET" : 4, "PRESENTATION" : 4, "NAME" : "Group Psalm"},
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 6, "PRESENTATION" : 2, "NAME" : "Sermon Presenter"},
+    {"Camera" : PTZ_CAMERAS[0], "PRESET" : 7, "PRESENTATION" : 0, "NAME" : "Sermon No Presenter"},
+    {"Camera" : PTZ_CAMERAS[2], "PRESET" : 3, "PRESENTATION" : 1, "NAME" : "Burial"}
+
 ]
 
 @app.route('/')
@@ -85,21 +94,52 @@ def atem_control(scene_index, presenter):
     atem.waitForConnection()
     atem.setPreviewInputVideoSource("mixEffect1", scene_index)
     
-    if presenter == 1 and atem.switcher.keyer["mixEffect1"]["keyer1"].onAir.enabled == False:
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer1",True)
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
-    if presenter == 2 and atem.switcher.keyer["mixEffect1"]["keyer2"].onAir.enabled == False:
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer2",True)
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
-    if presenter == 0:
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
-        atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+    #OLD CODE
+    #if presenter == 1 and atem.switcher.keyer["mixEffect1"]["keyer1"].onAir.enabled == False:
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer1",True)
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+    #if presenter == 2 and atem.switcher.keyer["mixEffect1"]["keyer2"].onAir.enabled == False:
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer2",True)
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+    #if presenter == 0:
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+    #    atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
     
+    
+    match presenter:
+        case 1:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",True)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",False)
+        case 2:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",True)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",False)
+        case 3:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",True)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",False)
+        case 4:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",True)
+        case 0:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",False)
+        case _:
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer1",True)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer2",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer3",False)
+            atem.setKeyerOnAirEnabled("mixEffect1","keyer4",False)
+
     atem.execAutoME("mixEffect1")
 
-    
-    
-    
     atem.disconnect()
 
 
@@ -112,14 +152,35 @@ def start_streaming():
     # Add code here to trigger streaming from OBS
     # You might need to use a specific OBS WebSockets API or other methods
     # For simplicity, a placeholder message is returned in this example.
-    
-    response_data = {
-            "success": True,
-            "message": f"Started streaming from OBS!"
-        }
 
-    #return "Started streaming from OBS!"
-    return jsonify(response_data)
+   
+    """ async with websocket.connect(websocket_url) as ws:
+    # Authentication with password (if set)
+    if password:
+      auth_data = {"request-type": "Authenticate", "password": password}
+      await ws.send(json.dumps(auth_data))
+      response = await ws.recv()
+      if json.loads(response)["status"] != "ok":
+        print("Authentication failed!")
+        return
+
+    # Start streaming command
+    start_stream_data = {"request-type": "StartStreaming"}
+    await ws.send(json.dumps(start_stream_data))
+    response = await ws.recv()
+    if json.loads(response)["status"] == "ok":
+        print("Streaming started successfully!")
+    else:
+        print("Failed to start streaming:", json.loads(response)["error"])
+   
+     """
+    
+    #response_data = {
+    #        "success": True,
+    #        "message": f"Started streaming from OBS!"
+    #    }
+    return "Started streaming from OBS!"
+    #return jsonify(response_data)
 
 @app.route('/stop_streaming')
 def stop_streaming():
