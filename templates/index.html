@@ -1,87 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Interface</title>
-
+    <title>Streaming Control Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         .active-ptz-scene {
-            font-weight: bold;
-            color: green;
+            background-color: #4CAF50 !important;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .scene-card {
+            transition: all 0.3s ease;
+        }
+        .scene-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body>
-    <h1>Streaming Controller Interface</h1>
-    
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Streaming Controller</h1>
+            <div class="w-24 h-1 bg-green-500 mx-auto"></div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Annual Scenes -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gray-800 text-white px-6 py-4">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i data-feather="calendar" class="mr-2"></i> Annual Scenes
+                    </h2>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="controlPtzAndSwitchScene(0)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="0">
+                        <h3 class="font-medium text-gray-800">Main View</h3>
+                        <p class="text-sm text-gray-500 mt-1">Default camera position</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(1)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="1">
+                        <h3 class="font-medium text-gray-800">Sermon/Announcements</h3>
+                        <p class="text-sm text-gray-500 mt-1">Focus on speaker</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(2)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="2">
+                        <h3 class="font-medium text-gray-800">Altar View</h3>
+                        <p class="text-sm text-gray-500 mt-1">Ceremonial focus</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(3)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="3">
+                        <h3 class="font-medium text-gray-800">Readings</h3>
+                        <p class="text-sm text-gray-500 mt-1">Scripture focus</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(4)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="4">
+                        <h3 class="font-medium text-gray-800">Front View</h3>
+                        <p class="text-sm text-gray-500 mt-1">Wide angle</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(5)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="5">
+                        <h3 class="font-medium text-gray-800">Readings/Sermon</h3>
+                        <p class="text-sm text-gray-500 mt-1">Without presenter</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pascha Scenes -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-purple-800 text-white px-6 py-4">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i data-feather="star" class="mr-2"></i> Pascha Scenes
+                    </h2>
+                </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="controlPtzAndSwitchScene(6)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="6">
+                        <h3 class="font-medium text-gray-800">Pascha Main</h3>
+                        <p class="text-sm text-gray-500 mt-1">Primary view</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(7)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="7">
+                        <h3 class="font-medium text-gray-800">Psalm</h3>
+                        <p class="text-sm text-gray-500 mt-1">Musical focus</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(8)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="8">
+                        <h3 class="font-medium text-gray-800">Gospel/Readings</h3>
+                        <p class="text-sm text-gray-500 mt-1">Scripture focus</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(9)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="9">
+                        <h3 class="font-medium text-gray-800">Group Psalm</h3>
+                        <p class="text-sm text-gray-500 mt-1">Choir view</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(10)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="10">
+                        <h3 class="font-medium text-gray-800">Sermon Presenter</h3>
+                        <p class="text-sm text-gray-500 mt-1">Speaker focus</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(11)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="11">
+                        <h3 class="font-medium text-gray-800">Sermon No Presenter</h3>
+                        <p class="text-sm text-gray-500 mt-1">Alternative view</p>
+                    </button>
+                    <button onclick="controlPtzAndSwitchScene(12)" class="ptz-scene-link scene-card bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-left" data-scene="12">
+                        <h3 class="font-medium text-gray-800">Burial</h3>
+                        <p class="text-sm text-gray-500 mt-1">Ceremonial focus</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OBS Controls -->
+        <div class="mt-12 bg-white rounded-xl shadow-md overflow-hidden max-w-2xl mx-auto">
+            <div class="bg-blue-800 text-white px-6 py-4">
+                <h2 class="text-xl font-semibold flex items-center">
+                    <i data-feather="video" class="mr-2"></i> OBS Controls
+                </h2>
+                <p class="text-sm text-blue-200 mt-1">Feature coming soon</p>
+            </div>
+            <div class="p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                    <i data-feather="play" class="mr-2"></i> Start Stream
+                </button>
+                <button class="bg-red-100 hover:bg-red-200 text-red-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                    <i data-feather="stop-circle" class="mr-2"></i> Stop Stream
+                </button>
+                <button class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                    <i data-feather="circle" class="mr-2"></i> Start Record
+                </button>
+                <button class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                    <i data-feather="square" class="mr-2"></i> Stop Record
+                </button>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-500 text-sm">
+            <p>Streaming Control Interface v1.0</p>
+        </footer>
+    </div>
+
     <script>
-    function controlPtzAndSwitchScene(sceneNumber) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/control_ptz_and_switch_scene/' + sceneNumber, true);
+        function controlPtzAndSwitchScene(sceneNumber) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/control_ptz_and_switch_scene/' + sceneNumber, true);
 
-        xhr.onload = function() {
-            var response = JSON.parse(xhr.responseText);
-            
-            if (response.success) {
-                alert(response.message); // You can replace this with any other UI update logic
-                updateActivePtzScene(sceneNumber);  // Add this line to update the active PTZ scene
-            } else {
-                alert("Error: " + response.message); // You can replace this with any other UI update logic
-            }
-        };
+            xhr.onload = function() {
+                var response = JSON.parse(xhr.responseText);
+                
+                if (response.success) {
+                    updateActivePtzScene(sceneNumber);
+                } else {
+                    alert("Error: " + response.message);
+                }
+            };
 
-        xhr.send();
-    }
-
-    function updateActivePtzScene(activeScene) {
-        // Remove the 'active-ptz-scene' class from all PTZ scene links
-        var ptzSceneLinks = document.querySelectorAll('.ptz-scene-link');
-        ptzSceneLinks.forEach(function(link) {
-            link.classList.remove('active-ptz-scene');
-        });
-
-        // Add the 'active-ptz-scene' class to the active PTZ scene link
-        var activeLink = document.querySelector('.ptz-scene-link[data-scene="' + activeScene + '"]');
-        if (activeLink) {
-            activeLink.classList.add('active-ptz-scene');
+            xhr.send();
         }
-    }
 
+        function updateActivePtzScene(activeScene) {
+            document.querySelectorAll('.ptz-scene-link').forEach(link => {
+                link.classList.remove('active-ptz-scene');
+                if (link.dataset.scene == activeScene) {
+                    link.classList.add('active-ptz-scene');
+                }
+            });
+        }
+
+        // Initialize feather icons
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
     </script>
-
-    
-
-
-
-    <h2>Select Camera View:</h2>
-    <h3>Annual</h3>
-    <ul> 
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(0)" class="ptz-scene-link" data-scene=0>Main</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(1)" class="ptz-scene-link" data-scene=1>Sermon/Announcements</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(2)" class="ptz-scene-link" data-scene=2>Altar</a></button> 
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(3)" class="ptz-scene-link" data-scene=3>Readings</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(4)" class="ptz-scene-link" data-scene=4>Front</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(5)" class="ptz-scene-link" data-scene=5>Readings/Sermon w/o Presenter</a></button>          
-    </ul>
-    
-    <h3>Pascha</h3>
-    <ul> 
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(6)" class="ptz-scene-link" data-scene=6>Pascha Main</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(7)" class="ptz-scene-link" data-scene=7>Psalm</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(8)" class="ptz-scene-link" data-scene=8>Gospel/Readings</a></button> 
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(9)" class="ptz-scene-link" data-scene=9>Group Psalm</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(10)" class="ptz-scene-link" data-scene=10>Sermon Presenter</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(11)" class="ptz-scene-link" data-scene=11>Sermon No Presenter</a></button>
-    <button><a href="javascript:void(0);" onclick="controlPtzAndSwitchScene(12)" class="ptz-scene-link" data-scene=12>Burial</a></button>          
-    </ul>
-
-
-    <h2>OBS Controls: [[NOT WORKING YET]]</h2>
-    <button><a href="/start_streaming">Start Streaming</a></button>
-    <button><a href="/stop_streaming">Start Streaming</a></button>
-    <button><a href="/start_recording">Start Streaming</a></button>
-    <button><a href="/stop_recording">Start Streaming</a></button>
 </body>
 </html>
