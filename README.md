@@ -1,2 +1,5 @@
-# HCCOC_stream_control
- livestream mixer/camera control for HCCOC
+#Redesigned HCCOC
+ Live streaminf control panel, 
+------
+#Whats new?
+Added a new index.html design, and hooked up obs.
