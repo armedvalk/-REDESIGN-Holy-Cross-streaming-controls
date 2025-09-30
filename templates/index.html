@@ -110,19 +110,19 @@
                 <h2 class="text-xl font-semibold flex items-center">
                     <i data-feather="video" class="mr-2"></i> OBS Controls
                 </h2>
-                <p class="text-sm text-blue-200 mt-1">Feature coming soon</p>
+                <p class="text-sm text-blue-200 mt-1">Control your OBS Studio instance</p>
             </div>
             <div class="p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                <button onclick="controlOBS('start_stream')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
                     <i data-feather="play" class="mr-2"></i> Start Stream
                 </button>
-                <button class="bg-red-100 hover:bg-red-200 text-red-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                <button onclick="controlOBS('stop_stream')" class="bg-red-100 hover:bg-red-200 text-red-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
                     <i data-feather="stop-circle" class="mr-2"></i> Stop Stream
                 </button>
-                <button class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                <button onclick="controlOBS('start_record')" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
                     <i data-feather="circle" class="mr-2"></i> Start Record
                 </button>
-                <button class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
+                <button onclick="controlOBS('stop_record')" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center">
                     <i data-feather="square" class="mr-2"></i> Stop Record
                 </button>
             </div>
@@ -158,6 +158,24 @@
                     link.classList.add('active-ptz-scene');
                 }
             });
+        }
+
+        function controlOBS(action) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/obs_control/' + action, true);
+            xhr.onload = function() {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Optionally provide visual feedback
+                    console.log(action + ' successful');
+                } else {
+                    alert("Error: " + response.message);
+                }
+            };
+            xhr.onerror = function() {
+                alert("Network error occurred.");
+            };
+            xhr.send();
         }
 
         // Initialize feather icons
