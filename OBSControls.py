@@ -4,7 +4,7 @@ import obsws_python as obs
 app = Flask(__name__)
 
 # OBS WebSocket connection details
-OBS_HOST = '192.168.1.169'
+OBS_HOST = 'localhost'
 OBS_PORT = 4455
 OBS_PASSWORD = 'nIbf4Y7xnn7u2fg'
 # Replace with your OBS WebSocket password
