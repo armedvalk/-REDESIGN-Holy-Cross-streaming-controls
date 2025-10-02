@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Streaming Control Interface</title>
+    <title>Divine Stream Controller</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
@@ -19,14 +19,40 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        #livePreview {
+            border: 4px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        #livePreview:hover {
+            border-color: #9CA3AF;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <header class="mb-10 text-center">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Streaming Controller</h1>
-            <div class="w-24 h-1 bg-green-500 mx-auto"></div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Divine Stream Controller</h1>
+            <div class="w-24 h-1 bg-indigo-500 mx-auto"></div>
         </header>
+
+        <!-- Live Preview Section -->
+        <div class="mb-12 bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-indigo-800 text-white px-6 py-4">
+                <h2 class="text-xl font-semibold flex items-center">
+                    <i data-feather="eye" class="mr-2"></i> Live Preview
+                </h2>
+            </div>
+            <div class="p-4">
+                <div id="livePreview" class="w-full h-64 md:h-96 bg-black rounded-lg overflow-hidden relative">
+                    <video id="webcamFeed" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Annual Scenes -->
@@ -129,11 +155,30 @@
         </div>
 
         <footer class="mt-16 text-center text-gray-500 text-sm">
-            <p>Streaming Control Interface v1.0</p>
+            <p>Divine Stream Controller v1.0 ✝️</p>
         </footer>
     </div>
 
     <script>
+        // Webcam feed initialization
+        async function initWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'environment'
+                    },
+                    audio: false
+                });
+                const videoElement = document.getElementById('webcamFeed');
+                videoElement.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing webcam:', err);
+                document.getElementById('cameraStatus').textContent = 'Camera not available';
+            }
+        }
+
         function controlPtzAndSwitchScene(sceneNumber) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/control_ptz_and_switch_scene/' + sceneNumber, true);
@@ -178,8 +223,9 @@
             xhr.send();
         }
 
-        // Initialize feather icons
+        // Initialize webcam feed and feather icons
         document.addEventListener('DOMContentLoaded', function() {
+            initWebcam();
             feather.replace();
         });
     </script>
